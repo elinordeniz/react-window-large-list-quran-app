@@ -86,7 +86,7 @@ useEffect(()=>{
   return (
  
     <div ref={localRef}  className={`verse ${selectedVerses?.includes(desc) ? " selected" : ""}`}  >
-      <h5>{name} </h5>
+      <h5  onClick={()=>toggleSelected(desc)}>{name}: </h5>
       <div className='verse-colors' >
       <span onClick={()=>toggleSelected(desc)}>
       <div    >{desc?.split("-")[1]}{". "} <ColorSearched verse={verse} /> </div>

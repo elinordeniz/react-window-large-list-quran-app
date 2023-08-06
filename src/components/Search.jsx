@@ -18,6 +18,7 @@ const Search = () => {
         <TfiSearch />{" "}
       </div>
      <input
+     name="search"
         type="text"
         placeholder="Meal Ara"
         value={search}
