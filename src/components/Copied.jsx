@@ -6,7 +6,6 @@ import {
 import { useEffect } from "react";
 
 const Copied = () => {
-   console.log("Copied")
   const copied = useSelector(selectCopied);
   const ayah = copied.split("-")[1];
   const surah = copied.split("-")[0];

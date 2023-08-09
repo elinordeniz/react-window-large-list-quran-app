@@ -1,30 +1,29 @@
-import { selectSearch } from "../features/collection/collectionSlice"
+import { selectSearch } from "../features/collection/collectionSlice";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-const ColorSearched = ({verse}) => {
- console.log("ColorSearched")
-    const search= useSelector(selectSearch)
-    const [result,setResult]= useState(verse);
+const ColorSearched = ({ verse }) => {
+  const search = useSelector(selectSearch);
+  const [result, setResult] = useState(verse);
 
-useEffect(()=>{
+  useEffect(() => {
     function getPortions(queryString, string) {
-        if (queryString) {
-          var rgxp = new RegExp("(\\S*)?(" + queryString + ")(\\S*)?", "ig");
-          return string.replace(
-            rgxp,
-            (match) =>`<b style={{color:"blue", fontWeight:"600"}}> ${match} </b>`
-          );
-        }
-        return verse
+      if (queryString) {
+        var rgxp = new RegExp("(\\S*)?(" + queryString + ")(\\S*)?", "ig");
+        return string.replace(
+          rgxp,
+          (match) =>
+            `<b style={{color:"blue", fontWeight:"600"}}> ${match} </b>`
+        );
       }
+      return verse;
+    }
 
-  var res = getPortions(search, verse);
-  setResult(res)
+    var res = getPortions(search, verse);
+    setResult(res);
+  }, [search]);
 
-}, [search])
-
-  return <span  dangerouslySetInnerHTML={{__html: result}}></span>;
+  return <span dangerouslySetInnerHTML={{ __html: result }}></span>;
 };
 
 export default ColorSearched;

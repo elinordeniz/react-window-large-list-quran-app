@@ -1,21 +1,35 @@
-import { jsPDF } from "jspdf";
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, redirect } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectSelectedVerses,
-  clearSelectedVerses,
+  setDownloadClick,
+  selectDownloadClicked,
 } from "../features/collection/collectionSlice";
 import { useGetAllVersesQuery } from "../features/api/apiSlice";
 
+import pdfMake from "pdfmake/build/pdfmake.min";
+
+pdfMake.fonts = {
+  Roboto: {
+    normal:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
+    bold: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
+    italics:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf",
+    bolditalics:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf",
+  },
+};
+
 const DownloadPdf = () => {
-  const ref = useRef(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const selectedVerses = useSelector(selectSelectedVerses);
-if(!selectSelectedVerses.length){
-    redirect("/");
-}
-  const { downloadVerses } = useGetAllVersesQuery(undefined, {
+  const downloadClicked = useSelector(selectDownloadClicked);
+
+  const { downloadVerses } = useGetAllVersesQuery("OneVerses", {
     selectFromResult: (result) => ({
       ...result,
       downloadVerses: selectedVerses.map((desc) => {
@@ -24,71 +38,70 @@ if(!selectSelectedVerses.length){
     }),
   });
 
-  var doc = new jsPDF("p", "pt", "a4", true);
+  useEffect(() => {
+    if (selectSelectedVerses.length === 0 || downloadClicked === false) {
+      navigate("/");
+    } else {
+      dispatch(setDownloadClick(false));
 
-  doc.setLanguage("tr");
+      function buildTableBody(data, columns) {
+        var body = [];
 
+        data.forEach(function (row) {
+          var dataRow = [];
 
-    // doc.text("Lorem ipsum dolor şekilden çirkinlikçeşine görüldüğü üzere öğr dedimki sit amet consectetur adipisicing elit. Quod tempore necessitatibus voluptate earum quia dignissimos vel consectetur? Architecto totam officia praesentium voluptatem vitae harum sunt numquam. Id cum repellendus exercitationem?", 70,10)
-    doc.html(ref.current, {
-      margin: 10,
-      callback: function (doc) {
-        selectedVerses &&  doc.save(Date.now() + ".pdf");
-        navigate("/");
+          columns.forEach(function (column) {
+            dataRow.push(row[column].toString());
+          });
 
-      },
-      autoPaging: "text",
-      x: 15,
-      y: 15,
-    });
+          body.push(dataRow);
+        });
 
-  return (
-    <div
-      ref={ref}
-      style={{
-        right: 0,
-        top: 0,
-        bottom: 0,
-        height: "100%",
-        width: "550px",
-        padding: "20px",
-        overflow: "auto",
-        fontSize: "12px",
-        fontFamily: "Roboto",
-        fontWeight: "300",
-      }}
-    >
-      <h1
-        style={{
-          fontSize: "15px",
-          display: "flex",
-          alignContent: "center",
-          color: "#86a095",
-          padding: "8px",
-        }}
-      >
-        Meal Listesi {"  -  "} {new Date().toLocaleDateString()}
-      </h1>
+        return body;
+      }
 
-      {downloadVerses.map((v, key) => (
-        <p
-          key={key}
-          style={{
-            marginBottom: "12px",
-            marginTop: "12px",
-            padding: "8px",
-            color: "rgb(81, 79, 79)",
-          }}
-        >
-          {" "}
-          <span style={{ color: "#86a095", fontWeight: 500 }}>
-            {v.desc} :{" "}
-          </span>{" "}
-          {v.verse}
-        </p>
-      ))}
-    </div>
-  );
+      function table(data, columns) {
+        return {
+          style: "table",
+          table: {
+            widths: [35, "auto"],
+            body: buildTableBody(data, columns),
+          },
+          alignment: "left",
+          layout: {
+            paddingLeft: (i, node) => 12,
+            paddingRight: (i, node) => 12,
+            paddingTop: (i, node) => 12,
+            paddingBottom: (i, node) => 12,
+          },
+        };
+      }
+      var docDefinition = {
+        content: [
+          {
+            text: `Kuran Meal Listesi ${new Date().toLocaleDateString()}`,
+            style: "subheader",
+          },
+          table(downloadVerses, ["desc", "verse"]),
+        ],
+        styles: {
+          subheader: {
+            fontSize: 16,
+            bold: true,
+            margin: [0, 10, 0, 5],
+          },
+          table: {
+            margin: [0, 5, 0, 15],
+            padding: 10,
+          },
+        },
+      };
+      pdfMake.createPdf(docDefinition).download();
+      navigate("/");
+    }
+  }, []);
+
+  return null;
 };
 
 export default DownloadPdf;

@@ -1,21 +1,22 @@
 import { TfiDownload, TfiLink, TfiClose } from "react-icons/tfi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectSelectedVerses,
   clearSelectedVerses,
+  setDownloadClick,
 } from "../features/collection/collectionSlice";
 const Download = () => {
-  console.log("Download");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const selectedVerses = useSelector(selectSelectedVerses);
-
-  const handleDownload= (e)=>{
+ console.log(selectedVerses)
+  const handleDownload = (e) => {
     e.preventDefault();
-    navigate('/download');
-  }
+    dispatch(setDownloadClick(true));
+    navigate("/download");
+  };
   return (
     <div className="download">
       <div className="actions">
@@ -24,7 +25,7 @@ const Download = () => {
         </button>
 
         <button>
-          <TfiLink />
+          <Link to={`/collection/${selectedVerses.join(",")}`}><TfiLink /></Link>
         </button>
       </div>
       <div className="selected" onClick={() => dispatch(clearSelectedVerses())}>

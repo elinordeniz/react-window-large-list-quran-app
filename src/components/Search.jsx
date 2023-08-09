@@ -6,7 +6,6 @@ import {
 } from "../features/collection/collectionSlice";
 
 const Search = () => {
-   console.log("Search")
   const dispatch = useDispatch();
   const search = useSelector(selectSearch);
   const handleChange = (e) => {
@@ -17,8 +16,8 @@ const Search = () => {
       <div className="icon">
         <TfiSearch />{" "}
       </div>
-     <input
-     name="search"
+      <input
+        name="search"
         type="text"
         placeholder="Meal Ara"
         value={search}

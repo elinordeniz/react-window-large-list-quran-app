@@ -2,11 +2,12 @@ import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import Content from "./components/Content";
 import Copied from "./components/Copied";
 import DownloadPdf from "./components/DownloadPdf";
+import Collection from "./components/Collection";
 import { useSelector } from "react-redux";
 import { selectCopied } from "./features/collection/collectionSlice";
-
+import Header from "./components/Header";
+import VersesContainer from "./components/VersesContainer";
 function App() {
-   console.log("App")
   const copied = useSelector(selectCopied);
 
   return (
@@ -14,8 +15,11 @@ function App() {
       {copied && <Copied />}
       <Router>
         <Routes>
-          <Route path="/" element={<Content />} />
+          <Route element={<Content />}>
+          <Route path="/" element={ <VersesContainer />} />
           <Route path="/download" element={<DownloadPdf />} />
+          <Route path="/collection/:slugs" element={<Collection />} />
+</Route>
         </Routes>
       </Router>
     </>
