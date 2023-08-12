@@ -16,7 +16,7 @@ function App() {
       <Router>
         <Routes>
           <Route element={<Content />}>
-          <Route path="/" element={ <VersesContainer />} />
+          <Route path="/*" element={ <VersesContainer />} />
           <Route path="/download" element={<DownloadPdf />} />
           <Route path="/collection/:slugs" element={<Collection />} />
 </Route>

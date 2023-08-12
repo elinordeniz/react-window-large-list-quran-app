@@ -1,8 +1,23 @@
-# React + Vite
+# React Quran App with react-window
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- It has more than 6,000 components to be render on home page with a search for filtering onChange. But, thanks to react window the app renders only window size components with high-performance.
 
-Currently, two official plugins are available:
+- This react app started with VITE.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## TECHS
+
+- Redux Toolkit
+- RTK Query
+- React Window
+- React Virtualized Auto Sizer
+- PDF MAKE
+- React Copy to Clipboard
+- React Router Dom
+- SAAS
+- React Icons
+
+## Routes
+
+- "/" Home Page that includes more than 6 thousands lines with search function
+- "/collection/slugs" You can select multiple lines and create a link to share with friends
+- "/download" You can select multiple lines to export and download as PDF.

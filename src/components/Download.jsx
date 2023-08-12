@@ -11,7 +11,6 @@ const Download = () => {
   const navigate = useNavigate();
 
   const selectedVerses = useSelector(selectSelectedVerses);
- console.log(selectedVerses)
   const handleDownload = (e) => {
     e.preventDefault();
     dispatch(setDownloadClick(true));
