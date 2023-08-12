@@ -21,3 +21,11 @@
 - "/" Home Page that includes more than 6 thousands lines with search function
 - "/collection/slugs" You can select multiple lines and create a link to share with friends
 - "/download" You can select multiple lines to export and download as PDF.
+
+## Live Demo
+
+- [Go to Live App](https://react-quran-app.onrender.com)
+
+## Preview
+
+<img src="https://github.com/elinordeniz/react-window-large-list-quran-app/blob/main/public/kuran-meal.png" width="600" height="374"/>
